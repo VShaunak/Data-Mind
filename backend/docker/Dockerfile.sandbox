@@ -1,0 +1,33 @@
+# Data Mind Secure Hardened Sandbox Container
+FROM python:3.11-slim
+
+# Create unprivileged sandbox user
+RUN groupadd -r datamind && useradd -r -g datamind -u 1000 datamind
+
+# Install data science dependencies
+RUN pip install --no-cache-dir \
+    pandas \
+    numpy \
+    scipy \
+    statsmodels \
+    scikit-learn \
+    plotly \
+    openpyxl \
+    pyarrow
+
+# Create isolated working directories with restrictive permissions
+RUN mkdir -p /sandbox /data /output && \
+    chown -R datamind:datamind /sandbox /data /output && \
+    chmod 755 /sandbox /data && \
+    chmod 777 /output
+
+USER datamind
+WORKDIR /sandbox
+
+# Environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV MPLCONFIGDIR=/output/.matplotlib
+
+CMD ["python", "/sandbox/script.py"]
+

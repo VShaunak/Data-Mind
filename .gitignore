@@ -1,0 +1,17 @@
+.flowbaby/
+#.github/
+agent-output/
+*.env
+*.local 
+.DS_Store
+**.mardownlint.json
+
+# Data Mind Environment & Build Artifacts
+backend/.venv/
+frontend/node_modules/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.db
+*.db-wal
+*.db-shm
